@@ -3,6 +3,8 @@ import Image from "../assets/image.png";
 import Logo from "../assets/logo.png";
 import GoogleSvg from "../assets/icons8-google.svg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Prism from './Prism';
+
 
 
 
@@ -14,7 +16,17 @@ const Login = () => {
   return (
     <div className="login-main">
       <div className="login-left">
-        <img src={Image} alt="" />
+          <Prism
+    animationType="hover"
+    timeScale={0.5}
+    height={2}
+    baseWidth={2}
+    scale={3.6}
+    hueShift={0.2}
+    colorFrequency={2}
+    noise={0.2}
+    glow={1.5}
+  />
       </div>
       <div className="login-right">
         <div className="login-right-container">
