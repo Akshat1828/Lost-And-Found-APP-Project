@@ -5,11 +5,13 @@
 .login-main {
   display: flex;
   height: 100vh;
+  background-color: #121212; /* dark background for the whole page */
+  color: #ffffff; /* default text color */
 }
 
 .login-left {
   flex-grow: 1;
-  background-color: #E9E9E9;
+  background-color: #1e1e1e; /* darker left panel */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,9 +22,10 @@
 }
 
 .login-right {
-  background-color: white;  
+  background-color: #181818;  
   flex-grow: 1;
   height: 100vh;
+  color: #ffffff;
 }
 
 .login-right-container {
@@ -50,12 +53,14 @@
 
 .login-center h2 {
   font-size: 3.5rem;
+  color: #ffffff;
 }
 
 .login-center p {
   font-weight: 400;
   font-size: 2rem;
   margin-bottom: 40px;
+  color: #cccccc;
 }
 
 form input[type='email'],
@@ -65,7 +70,9 @@ form input[type='text'] {
   padding: 16px;
   margin-bottom: 16px;
   border: 0;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #555; /* lighter gray for dark theme */
+  background-color: transparent;
+  color: #ffffff;
   outline: none;
 }
 
@@ -79,6 +86,7 @@ form input[type='text'] {
   right: 10px;
   bottom: 35px;
   cursor: pointer;
+  color: #ffffff;
 }
 
 form button[type='button'] {
@@ -94,6 +102,7 @@ form button[type='button'] {
 .login-center-options {
   display: flex;
   justify-content: space-between;
+  color: #cccccc;
 }
 
 .remember-div {
@@ -107,15 +116,18 @@ form button[type='button'] {
   font-weight: 500;
   cursor: pointer;
   margin-top: 2px;
+  color: #cccccc;
 }
 
 .forgot-pass-link {
   text-decoration: none;
   font-size: 1.3rem;
+  color: #cccccc;
 }
 
 .forgot-pass-link:hover {
   text-decoration: underline;
+  color: #ffffff;
 }
 
 .login-center-buttons {
@@ -126,22 +138,24 @@ form button[type='button'] {
 }
 
 .login-center-buttons button:nth-child(1) {
-  background-color: black;
+  background-color: #ff7e5f; /* accent color */
   color: white;
-  border: 3px solid black;
+  border: 2px solid #ff7e5f;
 }
 
 .login-center-buttons button:nth-child(1):hover {
-  color: #333;
-  background-color: white;
+  color: #ff7e5f;
+  background-color: #1e1e1e;
+  border: 2px solid #ff7e5f;
 }
 
 .login-center-buttons button:nth-child(2) {
-  background-color: #F0F0F0;
+  background-color: #2a2a2a;
   display: flex;
   justify-content: center;
   align-items: center;
   column-gap: 10px;
+  border: 1px solid #555;
 }
 
 .login-center-buttons button:nth-child(2) img {
@@ -149,20 +163,23 @@ form button[type='button'] {
 }
 
 .login-center-buttons button:nth-child(2):hover {
-  background-color: #c4c4c457;
+  background-color: #3a3a3a;
 }
 
 .login-bottom-p {
   text-align: center;
   font-size: 1.5rem;
   padding-bottom: 40px;
+  color: #cccccc;
 }
 
 .login-bottom-p a {
   text-decoration: none;
   font-weight: 600;
+  color: #ff7e5f;
 }
 
 .login-bottom-p a:hover {
   text-decoration: underline;
+  color: #ff9a78;
 }
