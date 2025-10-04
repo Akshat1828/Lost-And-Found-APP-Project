@@ -24,7 +24,7 @@ const Login = () => {
     scale={3.6}
     hueShift={0.2}
     colorFrequency={2}
-    noise={0.2}
+    noise={0}
     glow={1.5}
   />
       </div>
