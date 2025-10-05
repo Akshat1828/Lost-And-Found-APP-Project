@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // <- import this
+import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import GoogleSvg from "../assets/icons8-google.svg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Prism from './Prism';
 
 const Signup = () => {
-  const navigate = useNavigate(); // <- hook for navigation
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -20,12 +22,11 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, phone, email, password }),
       });
       const result = await response.text();
       if (response.ok) {
         setMessage('Registration successful! Please login.');
-        // Optionally navigate to login: navigate('/Login');
       } else {
         setMessage(result || 'Registration failed');
       }
@@ -49,16 +50,44 @@ const Signup = () => {
           glow={1.5}
         />
       </div>
+
       <div className="login-right">
         <div className="login-right-container">
           <div className="login-logo">
             <img src={Logo} alt="" />
           </div>
+
           <div className="login-center">
             <h2>Hello There!</h2>
             <p>Let's help you get started</p>
+
             <form onSubmit={handleSubmit}>
-              <input type="email" placeholder="Tell us your Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <input
+                type="text"
+                placeholder="Choose a username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+
+              <input
+                type="text"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                pattern="[0-9]{10}"
+                title="Enter a valid 10-digit phone number"
+                required
+              />
+
+              <input
+                type="email"
+                placeholder="Tell us your Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+
               <div className="pass-input-div">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -74,8 +103,6 @@ const Signup = () => {
                 )}
               </div>
 
-              <div className="login-center-options"></div>
-
               <div className="login-center-buttons">
                 <button type="submit">Sign Up</button>
                 <button type="button">
@@ -84,6 +111,7 @@ const Signup = () => {
                 </button>
               </div>
             </form>
+
             {message && <p>{message}</p>}
           </div>
 
