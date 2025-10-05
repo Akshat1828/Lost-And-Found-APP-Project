@@ -8,6 +8,31 @@ import Prism from './Prism';
 const Signup = () => {
   const navigate = useNavigate(); // <- hook for navigation
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:8080/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const result = await response.text();
+      if (response.ok) {
+        setMessage('Registration successful! Please login.');
+        // Optionally navigate to login: navigate('/Login');
+      } else {
+        setMessage(result || 'Registration failed');
+      }
+    } catch (error) {
+      setMessage('Error: ' + error.message);
+    }
+  };
 
   return (
     <div className="login-main">
@@ -32,12 +57,15 @@ const Signup = () => {
           <div className="login-center">
             <h2>Hello There!</h2>
             <p>Let's help you get started</p>
-            <form>
-              <input type="email" placeholder="Tell us your Email" />
+            <form onSubmit={handleSubmit}>
+              <input type="email" placeholder="Tell us your Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               <div className="pass-input-div">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Make a strong password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
                 {showPassword ? (
                   <FaEyeSlash onClick={() => setShowPassword(!showPassword)} />
@@ -49,13 +77,14 @@ const Signup = () => {
               <div className="login-center-options"></div>
 
               <div className="login-center-buttons">
-                <button type="button">Sign Up</button>
+                <button type="submit">Sign Up</button>
                 <button type="button">
                   <img src={GoogleSvg} alt="" />
                   Sign Up with Google
                 </button>
               </div>
             </form>
+            {message && <p>{message}</p>}
           </div>
 
           <p className="login-bottom-p">
