@@ -4,6 +4,7 @@ import Hero from "./pages/hero.jsx"
 import Login from "./pages/login.jsx"
 import Sign from "./pages/sign.jsx"
 import Mainr from "./pages/mainr.jsx"
+import Profile from "./pages/profile.jsx"
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Signup" element={<Sign />} />
         <Route path="/Mainr" element={<Mainr />} />
+        <Route path="/Profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   )
