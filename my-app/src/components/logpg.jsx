@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Image from "../assets/image.png";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import GoogleSvg from "../assets/icons8-google.svg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Prism from './Prism';
-import { useNavigate } from 'react-router-dom';
-
-
-
-
 
 const Login = () => {
   const [ showPassword, setShowPassword ] = useState(false);
@@ -41,17 +36,17 @@ const Login = () => {
   return (
     <div className="login-main">
       <div className="login-left">
-          <Prism
-    animationType="hover"
-    timeScale={0.5}
-    height={2}
-    baseWidth={2}
-    scale={3.6}
-    hueShift={0.2}
-    colorFrequency={2}
-    noise={0}
-    glow={1.5}
-  />
+        <Prism
+          animationType="hover"
+          timeScale={0.5}
+          height={2}
+          baseWidth={2}
+          scale={3.6}
+          hueShift={0.2}
+          colorFrequency={2}
+          noise={0}
+          glow={1.5}
+        />
       </div>
       <div className="login-right">
         <div className="login-right-container">
@@ -59,7 +54,7 @@ const Login = () => {
             <img src={Logo} alt="" />
           </div>
           <div className="login-center">
-            <h2>Welcome back!</h2>
+            <h2>Welcome Back!</h2>
             <p>Please enter your details</p>
             <form onSubmit={handleSubmit}>
               <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -80,6 +75,7 @@ const Login = () => {
                   Forgot password?
                 </a>
               </div>
+
               <div className="login-center-buttons">
                 <button type="submit">Log In</button>
                 <button type="button">
