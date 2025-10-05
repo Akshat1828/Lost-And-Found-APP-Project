@@ -2,19 +2,60 @@
 import { useNavigate } from 'react-router-dom';
 import AnimatedList from '@/components/AnimatedList';
 import Silk from '@/components/Silk';
+import CardNav from '@/components/CardNav'
+
+  const itemsh = [
+    {
+      label: "About",
+      bgColor: "#0D0716",
+      textColor: "#fff",
+      links: [
+        { label: "Company", ariaLabel: "About Company" },
+        { label: "Careers", ariaLabel: "About Careers" }
+      ]
+    },
+    {
+      label: "Projects", 
+      bgColor: "#170D27",
+      textColor: "#fff",
+      links: [
+        { label: "Featured", ariaLabel: "Featured Projects" },
+        { label: "Case Studies", ariaLabel: "Project Case Studies" }
+      ]
+    },
+    {
+      label: "Contact",
+      bgColor: "#271E37", 
+      textColor: "#fff",
+      links: [
+        { label: "Email", ariaLabel: "Email us" },
+        { label: "Twitter", ariaLabel: "Twitter" },
+        { label: "LinkedIn", ariaLabel: "LinkedIn" }
+      ]
+    }
+  ];
+
+
+
+
+
 
 const items = [
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 4',
-  'Item 5',
-  'Item 6',
-  'Item 7',
-  'Item 8',
-  'Item 9',
-  'Item 10'
+  <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
+    <img src="/path/to/image1.jpg" alt="Item 1" style={{ width: '100%', borderRadius: '10px' }} />
+    <h3 style={{ marginTop: '5px', color: '#000' }}>Title 1</h3>
+    <p style={{ color: '#333' }}>Description for item 1.</p>
+  </div>,
+
+  <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
+    <img src="/path/to/image2.jpg" alt="Item 2" style={{ width: '100%', borderRadius: '10px' }} />
+    <h3 style={{ marginTop: '5px', color: '#000' }}>Title 2</h3>
+    <p style={{ color: '#333' }}>Description for item 2.</p>
+  </div>,
+
+  // ...repeat for all items
 ];
+
 
 export default function MainR() {
   return (
@@ -44,6 +85,15 @@ export default function MainR() {
           backgroundColor: 'rgba(29, 29, 31, 0.7)' // optional overlay
         }}
       >
+            <CardNav
+
+      items={itemsh}
+      baseColor="#fff"
+      menuColor="#000"
+      buttonBgColor="#111"
+      buttonTextColor="#fff"
+      ease="power3.out"
+    />
         <AnimatedList
           items={items} 
           onItemSelect={(item, index) => console.log(item, index)}
