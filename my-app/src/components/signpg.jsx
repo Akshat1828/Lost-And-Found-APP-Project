@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // <- import this
 import Logo from "../assets/logo.png";
 import GoogleSvg from "../assets/icons8-google.svg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Prism from './Prism';
 
-const Login = () => {
-  const navigate = useNavigate();
+const Signup = () => {
+  const navigate = useNavigate(); // <- hook for navigation
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -19,7 +19,7 @@ const Login = () => {
           baseWidth={2}
           scale={3.6}
           hueShift={0.2}
-          colorFrequency={2}
+          colorFrequency={1}
           noise={0}
           glow={1.5}
         />
@@ -30,14 +30,14 @@ const Login = () => {
             <img src={Logo} alt="" />
           </div>
           <div className="login-center">
-            <h2>Welcome Back!</h2>
-            <p>Please enter your details</p>
+            <h2>Hello There!</h2>
+            <p>Let's help you get started</p>
             <form>
-              <input type="email" placeholder="Email" />
+              <input type="email" placeholder="Tell us your Email" />
               <div className="pass-input-div">
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Password"
+                  placeholder="Make a strong password"
                 />
                 {showPassword ? (
                   <FaEyeSlash onClick={() => setShowPassword(!showPassword)} />
@@ -46,38 +46,28 @@ const Login = () => {
                 )}
               </div>
 
-              <div className="login-center-options">
-                <div className="remember-div">
-                  <input type="checkbox" id="remember-checkbox" />
-                  <label htmlFor="remember-checkbox">
-                    Remember for 30 days
-                  </label>
-                </div>
-                <a href="#" className="forgot-pass-link">
-                  Forgot password?
-                </a>
-              </div>
+              <div className="login-center-options"></div>
 
               <div className="login-center-buttons">
-                <button type="button">Log In</button>
+                <button type="button">Sign Up</button>
                 <button type="button">
                   <img src={GoogleSvg} alt="" />
-                  Log In with Google
+                  Sign Up with Google
                 </button>
               </div>
             </form>
           </div>
 
           <p className="login-bottom-p">
-            Don't have an account?{" "}
+            Have an account?{" "}
             <a
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                navigate("/signup");
+                navigate("/login");
               }}
             >
-              Sign Up
+              Login
             </a>
           </p>
         </div>
@@ -86,4 +76,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
