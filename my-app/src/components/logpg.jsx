@@ -4,6 +4,7 @@ import Logo from "../assets/logo.png";
 import GoogleSvg from "../assets/icons8-google.svg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Prism from './Prism';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -11,7 +12,31 @@ import Prism from './Prism';
 
 const Login = () => {
   const [ showPassword, setShowPassword ] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:8080/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      const result = await response.text();
+      if (response.ok) {
+        navigate('/Mainr');
+      } else {
+        setMessage(result || 'Login failed');
+      }
+    } catch (error) {
+      setMessage('Error: ' + error.message);
+    }
+  };
 
   return (
     <div className="login-main">
@@ -36,10 +61,10 @@ const Login = () => {
           <div className="login-center">
             <h2>Welcome back!</h2>
             <p>Please enter your details</p>
-            <form>
-              <input type="email" placeholder="Email" />
+            <form onSubmit={handleSubmit}>
+              <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               <div className="pass-input-div">
-                <input type={showPassword ? "text" : "password"} placeholder="Password" />
+                <input type={showPassword ? "text" : "password"} placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 {showPassword ? <FaEyeSlash onClick={() => {setShowPassword(!showPassword)}} /> : <FaEye onClick={() => {setShowPassword(!showPassword)}} />}
                 
               </div>
@@ -56,17 +81,18 @@ const Login = () => {
                 </a>
               </div>
               <div className="login-center-buttons">
-                <button type="button">Log In</button>
+                <button type="submit">Log In</button>
                 <button type="button">
                   <img src={GoogleSvg} alt="" />
                   Log In with Google
                 </button>
               </div>
             </form>
+            {message && <p>{message}</p>}
           </div>
 
           <p className="login-bottom-p">
-            Don't have an account? <a href="#">Sign Up</a>
+            Don't have an account? <a href="/Signup">Sign Up</a>
           </p>
         </div>
       </div>
