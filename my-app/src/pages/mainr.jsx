@@ -52,6 +52,28 @@ const items = [
     <h3 style={{ marginTop: '5px', color: '#000' }}>Title 2</h3>
     <p style={{ color: '#333' }}>Description for item 2.</p>
   </div>,
+  <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
+    <img src="/path/to/image1.jpg" alt="Item 1" style={{ width: '100%', borderRadius: '10px' }} />
+    <h3 style={{ marginTop: '5px', color: '#000' }}>Title 1</h3>
+    <p style={{ color: '#333' }}>Description for item 1.</p>
+  </div>,
+
+  <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
+    <img src="/path/to/image2.jpg" alt="Item 2" style={{ width: '100%', borderRadius: '10px' }} />
+    <h3 style={{ marginTop: '5px', color: '#000' }}>Title 2</h3>
+    <p style={{ color: '#333' }}>Description for item 2.</p>
+  </div>,
+  <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
+    <img src="/path/to/image1.jpg" alt="Item 1" style={{ width: '100%', borderRadius: '10px' }} />
+    <h3 style={{ marginTop: '5px', color: '#000' }}>Title 1</h3>
+    <p style={{ color: '#333' }}>Description for item 1.</p>
+  </div>,
+
+  <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
+    <img src="/path/to/image2.jpg" alt="Item 2" style={{ width: '100%', borderRadius: '10px' }} />
+    <h3 style={{ marginTop: '5px', color: '#000' }}>Title 2</h3>
+    <p style={{ color: '#333' }}>Description for item 2.</p>
+  </div>,
 
   // ...repeat for all items
 ];

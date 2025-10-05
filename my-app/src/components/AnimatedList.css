@@ -5,6 +5,7 @@
 }
 
 .scroll-list {
+  margin-top: 20%;
   max-height: 100vh;
   overflow-y: auto;
   padding: 16px;
