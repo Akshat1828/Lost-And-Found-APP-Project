@@ -5,6 +5,7 @@ import CardNav from '@/components/CardNav';
 import Stepper, { Step } from '@/components/Stepper';
 import PostForm from '@/components/PostForm';
 import PostCard from '@/components/PostCard';
+import logo from '/src/assets/mainimage.png';
 
 export default function MainR() {
   const [name, setName] = useState('');
@@ -82,6 +83,7 @@ export default function MainR() {
           buttonBgColor="#111"
           buttonTextColor="#fff"
           ease="power3.out"
+          logo={logo}
         />
 
         {/* 📝 Posts Section */}
