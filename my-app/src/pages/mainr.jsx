@@ -146,30 +146,7 @@ export default function MainR() {
         </button>
 
         {/* 🚪 Logout button */}
-        <button
-          onClick={() => {
-            localStorage.removeItem('userEmail');
-            navigate('/Login');
-          }}
-          style={{
-            position: 'fixed',
-            top: '5%',
-            right: '5%',
-            zIndex: 60,
-            background: 'rgba(255, 0, 0, 0.7)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '10px 20px',
-            fontSize: '1rem',
-            cursor: 'pointer',
-            backdropFilter: 'blur(5px)',
-            transition: '0.3s ease',
-          }}
-          title="Logout"
-        >
-          Logout
-        </button>
+
 
         {/* 🌫 Background dim overlay */}
         {showStepper && (

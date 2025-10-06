@@ -159,7 +159,10 @@ const CardNav = ({
             type="button"
             className="card-nav-cta-button"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
-            onClick={() => { localStorage.clear(); navigate('/Login'); }}
+            onClick={() => {
+            localStorage.removeItem('userEmail');
+            navigate('/Login');
+          }}
           >
             Log out
           </button>
