@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -24,13 +28,19 @@ public class UserController {
     private DataSource dataSource;
 
     private UserDAO userDAO;
+    private PostDAO postDAO;
+    private CommentDAO commentDAO;
 
     @PostConstruct
     public void init() {
         try {
             Connection conn = dataSource.getConnection();
             userDAO = new UserDAO(conn);
+            postDAO = new PostDAO(conn);
+            commentDAO = new CommentDAO(conn);
             userDAO.createUsersTable();
+            postDAO.createPostsTable();
+            commentDAO.createCommentsTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,6 +75,87 @@ public class UserController {
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Posts endpoints
+    @PostMapping("/posts")
+    public ResponseEntity<String> createPost(@RequestBody Post post) {
+        boolean success = postDAO.createPost(post);
+        if (success) {
+            return ResponseEntity.ok("Post created successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to create post");
+        }
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<List<Post>> getAllPosts() {
+        List<Post> posts = postDAO.getAllPosts();
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/posts/{id}")
+    public ResponseEntity<Post> getPostById(@PathVariable int id) {
+        Post post = postDAO.getPostById(id);
+        if (post != null) {
+            return ResponseEntity.ok(post);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/posts/user/{userId}")
+    public ResponseEntity<List<Post>> getPostsByUserId(@PathVariable int userId) {
+        List<Post> posts = postDAO.getPostsByUserId(userId);
+        return ResponseEntity.ok(posts);
+    }
+
+    @PutMapping("/posts/{id}")
+    public ResponseEntity<String> updatePost(@PathVariable int id, @RequestBody Post post) {
+        post.setId(id);
+        boolean success = postDAO.updatePost(post);
+        if (success) {
+            return ResponseEntity.ok("Post updated successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to update post");
+        }
+    }
+
+    @DeleteMapping("/posts/{id}")
+    public ResponseEntity<String> deletePost(@PathVariable int id, @RequestParam int userId) {
+        boolean success = postDAO.deletePost(id, userId);
+        if (success) {
+            return ResponseEntity.ok("Post deleted successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to delete post");
+        }
+    }
+
+    // Comments endpoints
+    @PostMapping("/comments")
+    public ResponseEntity<String> createComment(@RequestBody Comment comment) {
+        boolean success = commentDAO.createComment(comment);
+        if (success) {
+            return ResponseEntity.ok("Comment created successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to create comment");
+        }
+    }
+
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable int postId) {
+        List<Comment> comments = commentDAO.getCommentsByPostId(postId);
+        return ResponseEntity.ok(comments);
+    }
+
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<String> deleteComment(@PathVariable int id, @RequestParam int userId) {
+        boolean success = commentDAO.deleteComment(id, userId);
+        if (success) {
+            return ResponseEntity.ok("Comment deleted successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to delete comment");
         }
     }
 }

@@ -216,6 +216,146 @@ Response: 200 OK
 }
 ```
 
+### Posts Endpoints
+
+#### Create Post
+```
+POST /api/users/posts
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "title": "Lost iPhone",
+  "description": "Black iPhone 12 lost near library",
+  "imageUrl": "https://example.com/image.jpg",
+  "itemType": "lost",
+  "location": "Library",
+  "contactInfo": "555-0123"
+}
+
+Response: 200 OK
+{
+  "message": "Post created successfully"
+}
+```
+
+#### Get All Posts
+```
+GET /api/users/posts
+
+Response: 200 OK
+[
+  {
+    "id": 1,
+    "userId": 1,
+    "username": "johndoe",
+    "title": "Lost iPhone",
+    "description": "Black iPhone 12 lost near library",
+    "imageUrl": "https://example.com/image.jpg",
+    "itemType": "lost",
+    "location": "Library",
+    "contactInfo": "555-0123",
+    "createdAt": "2025-10-06T10:30:00",
+    "updatedAt": "2025-10-06T10:30:00"
+  }
+]
+```
+
+#### Get Post by ID
+```
+GET /api/users/posts/{id}
+
+Response: 200 OK
+{
+  "id": 1,
+  "userId": 1,
+  "username": "johndoe",
+  "title": "Lost iPhone",
+  "description": "Black iPhone 12 lost near library",
+  "imageUrl": "https://example.com/image.jpg",
+  "itemType": "lost",
+  "location": "Library",
+  "contactInfo": "555-0123",
+  "createdAt": "2025-10-06T10:30:00",
+  "updatedAt": "2025-10-06T10:30:00"
+}
+```
+
+#### Update Post
+```
+PUT /api/users/posts/{id}
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "title": "Found iPhone",
+  "description": "Found black iPhone 12",
+  "itemType": "found",
+  "location": "Library"
+}
+
+Response: 200 OK
+{
+  "message": "Post updated successfully"
+}
+```
+
+#### Delete Post
+```
+DELETE /api/users/posts/{id}?userId=1
+
+Response: 200 OK
+{
+  "message": "Post deleted successfully"
+}
+```
+
+### Comments Endpoints
+
+#### Create Comment
+```
+POST /api/users/comments
+Content-Type: application/json
+
+{
+  "postId": 1,
+  "userId": 1,
+  "commentText": "I found a similar phone!"
+}
+
+Response: 200 OK
+{
+  "message": "Comment created successfully"
+}
+```
+
+#### Get Comments by Post ID
+```
+GET /api/users/posts/{postId}/comments
+
+Response: 200 OK
+[
+  {
+    "id": 1,
+    "postId": 1,
+    "userId": 1,
+    "username": "johndoe",
+    "commentText": "I found a similar phone!",
+    "createdAt": "2025-10-06T10:35:00"
+  }
+]
+```
+
+#### Delete Comment
+```
+DELETE /api/users/comments/{id}?userId=1
+
+Response: 200 OK
+{
+  "message": "Comment deleted successfully"
+}
+```
+
 ## User Guide
 
 1. **Launch Application**: Ensure both backend and frontend servers are running

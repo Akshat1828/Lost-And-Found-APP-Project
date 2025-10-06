@@ -1,14 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AnimatedList from '@/components/AnimatedList';
 import Silk from '@/components/Silk';
 import CardNav from '@/components/CardNav';
 import Stepper, { Step } from '@/components/Stepper';
+import PostForm from '@/components/PostForm';
+import PostCard from '@/components/PostCard';
 
 export default function MainR() {
   const [name, setName] = useState('');
   const [showStepper, setShowStepper] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Fetch posts on component mount
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/users/posts');
+      if (response.ok) {
+        const postsData = await response.json();
+        setPosts(postsData);
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePostCreated = () => {
+    fetchPosts(); // Refresh posts after creating a new one
+  };
 
   const itemsh = [
     {
@@ -26,49 +52,6 @@ export default function MainR() {
       textColor: '#fff',
       links: [{ label: 'Your Profile', ariaLabel: 'Your Profile', onClick: (e) => { e.preventDefault(); navigate('/Profile'); } }],
     },
-  ];
-
-  const items = [
-    <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
-      <img src="/path/to/image1.jpg" alt="Item 1" style={{ width: '100%', borderRadius: '10px' }} />
-      <h3 style={{ marginTop: '5px', color: '#000' }}>Title 1</h3>
-      <p style={{ color: '#333' }}>Description for item 1.</p>
-    </div>,
-    <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
-      <img src="/path/to/image2.jpg" alt="Item 2" style={{ width: '100%', borderRadius: '10px' }} />
-      <h3 style={{ marginTop: '5px', color: '#000' }}>Title 2</h3>
-      <p style={{ color: '#333' }}>Description for item 2.</p>
-    </div>,
-    <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
-      <img src="/path/to/image1.jpg" alt="Item 1" style={{ width: '100%', borderRadius: '10px' }} />
-      <h3 style={{ marginTop: '5px', color: '#000' }}>Title 1</h3>
-      <p style={{ color: '#333' }}>Description for item 1.</p>
-    </div>,
-    <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
-      <img src="/path/to/image2.jpg" alt="Item 2" style={{ width: '100%', borderRadius: '10px' }} />
-      <h3 style={{ marginTop: '5px', color: '#000' }}>Title 2</h3>
-      <p style={{ color: '#333' }}>Description for item 2.</p>
-    </div>,
-    <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
-      <img src="/path/to/image1.jpg" alt="Item 1" style={{ width: '100%', borderRadius: '10px' }} />
-      <h3 style={{ marginTop: '5px', color: '#000' }}>Title 1</h3>
-      <p style={{ color: '#333' }}>Description for item 1.</p>
-    </div>,
-    <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
-      <img src="/path/to/image2.jpg" alt="Item 2" style={{ width: '100%', borderRadius: '10px' }} />
-      <h3 style={{ marginTop: '5px', color: '#000' }}>Title 2</h3>
-      <p style={{ color: '#333' }}>Description for item 2.</p>
-    </div>,
-    <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
-      <img src="/path/to/image1.jpg" alt="Item 1" style={{ width: '100%', borderRadius: '10px' }} />
-      <h3 style={{ marginTop: '5px', color: '#000' }}>Title 1</h3>
-      <p style={{ color: '#333' }}>Description for item 1.</p>
-    </div>,
-    <div style={{ width: '90%', padding: '2%', backgroundColor: '#fff', borderRadius: '10px', margin: '1% 0' }}>
-      <img src="/path/to/image2.jpg" alt="Item 2" style={{ width: '100%', borderRadius: '10px' }} />
-      <h3 style={{ marginTop: '5px', color: '#000' }}>Title 2</h3>
-      <p style={{ color: '#333' }}>Description for item 2.</p>
-    </div>,
   ];
 
   return (
@@ -101,14 +84,42 @@ export default function MainR() {
           ease="power3.out"
         />
 
-        {/* 🧾 Animated list in center */}
-        <AnimatedList
-          items={items}
-          onItemSelect={(item, index) => console.log(item, index)}
-          showGradients={false}
-          enableArrowNavigation={true}
-          displayScrollbar={true}
-        />
+        {/* 📝 Posts Section */}
+        <div style={{
+          width: '90%',
+          maxWidth: '800px',
+          maxHeight: '70vh',
+          overflowY: 'auto',
+          padding: '20px',
+          background: 'rgba(255, 255, 255, 0.05)',
+          borderRadius: '15px',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          {/* Post Form */}
+          <PostForm onPostCreated={handlePostCreated} />
+
+          {/* Posts List */}
+          <div style={{ marginTop: '20px' }}>
+            <h2 style={{ color: '#fff', marginBottom: '15px', textAlign: 'center' }}>
+              Recent Posts
+            </h2>
+
+            {loading ? (
+              <div style={{ textAlign: 'center', color: '#fff', padding: '40px' }}>
+                Loading posts...
+              </div>
+            ) : posts.length === 0 ? (
+              <div style={{ textAlign: 'center', color: '#fff', padding: '40px' }}>
+                No posts yet. Be the first to create one!
+              </div>
+            ) : (
+              posts.map(post => (
+                <PostCard key={post.id} post={post} onPostUpdate={fetchPosts} />
+              ))
+            )}
+          </div>
+        </div>
 
         {/* 🎛 Toggle Stepper button */}
         <button
