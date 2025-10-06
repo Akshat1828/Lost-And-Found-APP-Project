@@ -113,6 +113,8 @@ Navigate to **Settings > Database** in your Supabase dashboard and record:
 ```sql
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(20),
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );
@@ -173,6 +175,8 @@ POST /api/users/register
 Content-Type: application/json
 
 {
+  "username": "johndoe",
+  "phone": "+1234567890",
   "email": "user@example.com",
   "password": "securePassword123"
 }
@@ -196,6 +200,19 @@ Content-Type: application/json
 Response: 200 OK
 {
   "message": "Login successful"
+}
+```
+
+#### Get User Profile
+```
+GET /api/users/profile?email=user@example.com
+
+Response: 200 OK
+{
+  "id": 1,
+  "username": "johndoe",
+  "phone": "+1234567890",
+  "email": "user@example.com"
 }
 ```
 

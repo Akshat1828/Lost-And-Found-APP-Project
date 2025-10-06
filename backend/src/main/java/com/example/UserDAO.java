@@ -17,6 +17,8 @@ public class UserDAO {
     public void createUsersTable() {
         String sql = "CREATE TABLE IF NOT EXISTS users (" +
                      "id SERIAL PRIMARY KEY," +
+                     "username VARCHAR(255) UNIQUE NOT NULL," +
+                     "phone VARCHAR(20)," +
                      "email VARCHAR(255) UNIQUE NOT NULL," +
                      "password VARCHAR(255) NOT NULL" +
                      ")";
@@ -28,11 +30,13 @@ public class UserDAO {
         }
     }
 
-    public boolean registerUser(String email, String password) {
-        String sql = "INSERT INTO users (email, password) VALUES (?, ?)";
+    public boolean registerUser(String username, String phone, String email, String password) {
+        String sql = "INSERT INTO users (username, phone, email, password) VALUES (?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, email);
-            pstmt.setString(2, password); // In real app, hash the password
+            pstmt.setString(1, username);
+            pstmt.setString(2, phone);
+            pstmt.setString(3, email);
+            pstmt.setString(4, password); // In real app, hash the password
             pstmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -52,5 +56,25 @@ public class UserDAO {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public User getUserByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPhone(rs.getString("phone"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

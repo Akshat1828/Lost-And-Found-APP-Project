@@ -24,6 +24,8 @@ const Login = () => {
       });
       const result = await response.text();
       if (response.ok) {
+        // Store user email in localStorage for profile access
+        localStorage.setItem('userEmail', email);
         navigate('/Mainr');
       } else {
         setMessage(result || 'Login failed');

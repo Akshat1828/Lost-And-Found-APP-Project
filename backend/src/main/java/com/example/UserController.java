@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -36,7 +38,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        boolean success = userDAO.registerUser(user.getEmail(), user.getPassword());
+        boolean success = userDAO.registerUser(user.getUsername(), user.getPhone(), user.getEmail(), user.getPassword());
         if (success) {
             return ResponseEntity.ok("User registered successfully");
         } else {
@@ -53,13 +55,34 @@ public class UserController {
             return ResponseEntity.badRequest().body("Invalid credentials");
         }
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<User> getUserProfile(@RequestParam String email) {
+        User user = userDAO.getUserByEmail(email);
+        if (user != null) {
+            // Don't return password in the response
+            user.setPassword(null);
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
 class User {
+    private int id;
+    private String username;
+    private String phone;
     private String email;
     private String password;
 
     // getters and setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
