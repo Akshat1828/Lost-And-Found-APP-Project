@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 // use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
+import { useNavigate } from 'react-router-dom';
 import './CardNav.css';
 
 const CardNav = ({
@@ -20,6 +21,7 @@ const CardNav = ({
   const navRef = useRef(null);
   const cardsRef = useRef([]);
   const tlRef = useRef(null);
+  const navigate = useNavigate();
 
   const calculateHeight = () => {
     const navEl = navRef.current;
@@ -157,6 +159,7 @@ const CardNav = ({
             type="button"
             className="card-nav-cta-button"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+            onClick={() => { localStorage.clear(); navigate('/Login'); }}
           >
             Log out
           </button>

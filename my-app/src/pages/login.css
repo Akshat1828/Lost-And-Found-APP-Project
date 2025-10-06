@@ -141,6 +141,8 @@ form button[type='button'] {
   background-color: #ff7e5f; /* accent color */
   color: white;
   border: 2px solid #ff7e5f;
+  height: 48px;
+  border-radius: 8px;
 }
 
 .login-center-buttons button:nth-child(1):hover {
@@ -156,6 +158,8 @@ form button[type='button'] {
   align-items: center;
   column-gap: 10px;
   border: 1px solid #555;
+  height: 48px;
+  border-radius: 8px;
 }
 
 .login-center-buttons button:nth-child(2) img {
