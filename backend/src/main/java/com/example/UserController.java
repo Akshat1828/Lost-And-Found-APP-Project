@@ -48,11 +48,27 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        boolean success = userDAO.registerUser(user.getUsername(), user.getPhone(), user.getEmail(), user.getPassword());
-        if (success) {
-            return ResponseEntity.ok("User registered successfully");
-        } else {
-            return ResponseEntity.badRequest().body("Registration failed");
+        try {
+            // Validate required fields
+            if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Username is required");
+            }
+            if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Email is required");
+            }
+            if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("Password is required");
+            }
+            
+            boolean success = userDAO.registerUser(user.getUsername(), user.getPhone(), user.getEmail(), user.getPassword());
+            if (success) {
+                return ResponseEntity.ok("User registered successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Registration failed. Email or username may already exist.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Internal server error: " + e.getMessage());
         }
     }
 
@@ -158,24 +174,4 @@ public class UserController {
             return ResponseEntity.badRequest().body("Failed to delete comment");
         }
     }
-}
-
-class User {
-    private int id;
-    private String username;
-    private String phone;
-    private String email;
-    private String password;
-
-    // getters and setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
 }

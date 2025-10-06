@@ -40,6 +40,7 @@ public class UserDAO {
             pstmt.executeUpdate();
             return true;
         } catch (SQLException e) {
+            System.err.println("SQL Error during user registration: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
