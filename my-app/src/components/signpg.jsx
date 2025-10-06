@@ -105,10 +105,7 @@ const Signup = () => {
 
               <div className="login-center-buttons">
                 <button type="submit">Sign Up</button>
-                <button type="button">
-                  <img src={GoogleSvg} alt="" />
-                  Sign Up with Google
-                </button>
+                
               </div>
             </form>
 
