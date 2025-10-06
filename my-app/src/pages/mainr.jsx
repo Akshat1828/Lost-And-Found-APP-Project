@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Silk from '@/components/Silk';
 import CardNav from '@/components/CardNav';
 import Stepper, { Step } from '@/components/Stepper';
-import PostForm from '@/components/PostForm';
 import PostCard from '@/components/PostCard';
 import logo from '/src/assets/mainimage.png';
 
 export default function MainR() {
   const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState(null);
   const [showStepper, setShowStepper] = useState(false);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,34 @@ export default function MainR() {
     fetchPosts(); // Refresh posts after creating a new one
   };
 
+  const handleSubmitPost = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('description', description);
+      if (image) formData.append('image', image);
+
+      const response = await fetch('http://localhost:8080/api/users/posts', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert('Post created successfully!');
+        handlePostCreated();
+        setShowStepper(false);
+        setName('');
+        setDescription('');
+        setImage(null);
+      } else {
+        alert('Failed to create post.');
+      }
+    } catch (error) {
+      console.error('Error creating post:', error);
+      alert('An error occurred while creating the post.');
+    }
+  };
+
   const itemsh = [
     {
       label: 'Items',
@@ -51,14 +80,32 @@ export default function MainR() {
       label: 'Profile',
       bgColor: '#0D0716',
       textColor: '#fff',
-      links: [{ label: 'Your Profile', ariaLabel: 'Your Profile', onClick: (e) => { e.preventDefault(); navigate('/Profile'); } }],
+      links: [
+        {
+          label: 'Your Profile',
+          ariaLabel: 'Your Profile',
+          onClick: (e) => {
+            e.preventDefault();
+            navigate('/Profile');
+          },
+        },
+      ],
     },
   ];
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       {/* 🌌 Background */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+        }}
+      >
         <Silk speed={5} scale={1} color="#4f3268ff" noiseIntensity={1.5} rotation={0} />
       </div>
 
@@ -87,21 +134,19 @@ export default function MainR() {
         />
 
         {/* 📝 Posts Section */}
-        <div style={{
-          width: '90%',
-          maxWidth: '800px',
-          maxHeight: '70vh',
-          overflowY: 'auto',
-          padding: '20px',
-          background: 'rgba(255, 255, 255, 0.05)',
-          borderRadius: '15px',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
-        }}>
-          {/* Post Form */}
-          <PostForm onPostCreated={handlePostCreated} />
-
-          {/* Posts List */}
+        <div
+          style={{
+            width: '90%',
+            maxWidth: '800px',
+            maxHeight: '70vh',
+            overflowY: 'auto',
+            padding: '20px',
+            background: 'rgba(255, 255, 255, 0.05)',
+            borderRadius: '15px',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+          }}
+        >
           <div style={{ marginTop: '20px' }}>
             <h2 style={{ color: '#fff', marginBottom: '15px', textAlign: 'center' }}>
               Recent Posts
@@ -116,14 +161,14 @@ export default function MainR() {
                 No posts yet. Be the first to create one!
               </div>
             ) : (
-              posts.map(post => (
+              posts.map((post) => (
                 <PostCard key={post.id} post={post} onPostUpdate={fetchPosts} />
               ))
             )}
           </div>
         </div>
 
-        {/* 🎛 Toggle Stepper button */}
+        {/* ⚙️ Stepper Toggle */}
         <button
           onClick={() => setShowStepper(!showStepper)}
           style={{
@@ -142,15 +187,12 @@ export default function MainR() {
             backdropFilter: 'blur(5px)',
             transition: '0.3s ease',
           }}
-          title={showStepper ? 'Close Stepper' : 'Open Stepper'}
+          title={showStepper ? 'Close Post Creator' : 'Create New Post'}
         >
-          {showStepper ? '✖' : '⚙️'}
+          {showStepper ? '✖' : '➕'}
         </button>
 
-        {/* 🚪 Logout button */}
-
-
-        {/* 🌫 Background dim overlay */}
+        {/* 🌫 Overlay */}
         {showStepper && (
           <div
             onClick={() => setShowStepper(false)}
@@ -165,7 +207,7 @@ export default function MainR() {
           />
         )}
 
-        {/* 🪟 Stepper in center */}
+        {/* 🪄 Stepper (Post Creation Wizard) */}
         <div
           style={{
             position: 'fixed',
@@ -190,49 +232,77 @@ export default function MainR() {
         >
           <Stepper
             initialStep={1}
-            onStepChange={(step) => console.log(step)}
-            onFinalStepCompleted={() => console.log('All steps completed!')}
+            onStepChange={(step) => console.log('Step:', step)}
+            onFinalStepCompleted={() => console.log('Post creation completed!')}
             backButtonText="Previous"
             nextButtonText="Next"
           >
             <Step>
-              <h2>Hey There!</h2>
-              <p>Lets help you find that item of yours!</p>
+              <h2>🪄 Create a New Post</h2>
+              <p>Let's help you list your lost or found item.</p>
             </Step>
+
             <Step>
-              <h2>Step 2</h2>
-              <img
-                style={{
-                  height: '20%',
-                  width: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'center -70%',
-                  borderRadius: '10px',
-                  marginTop: '2%',
-                }}
-                src="https://www.purrfectcatgifts.co.uk/cdn/shop/collections/Funny_Cat_Cards_640x640.png?v=1663150894"
-              />
-              <p>Give us an image if you have</p>
-            </Step>
-            <Step>
-              <h2>Any Important Information</h2>
+              <h2>📝 Item Details</h2>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Info"
+                placeholder="Item Name"
                 style={{
                   width: '80%',
                   padding: '2%',
-                  borderRadius: '8%',
+                  borderRadius: '8px',
                   border: 'none',
                   background: 'rgba(255,255,255,0.3)',
                   color: '#fff',
+                  marginBottom: '10px',
+                }}
+              />
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe the item..."
+                style={{
+                  width: '80%',
+                  height: '100px',
+                  padding: '2%',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: 'rgba(255,255,255,0.3)',
+                  color: '#fff',
+                  resize: 'none',
                 }}
               />
             </Step>
+
             <Step>
-              <h2>Thats It!</h2>
-              <p>You can go back and check the details if you want</p>
+              <h2>📸 Upload Image</h2>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files[0])}
+                style={{ marginTop: '10px', color: '#fff' }}
+              />
+              <p>Optional: Upload a picture of your item.</p>
+            </Step>
+
+            <Step>
+              <h2>✅ Ready to Post?</h2>
+              <p>Review your details and hit submit!</p>
+              <button
+                onClick={handleSubmitPost}
+                style={{
+                  marginTop: '10px',
+                  padding: '10px 20px',
+                  borderRadius: '10px',
+                  border: 'none',
+                  background: '#4f3268',
+                  color: '#fff',
+                  cursor: 'pointer',
+                }}
+              >
+                Submit Post
+              </button>
             </Step>
           </Stepper>
         </div>
