@@ -1,6 +1,5 @@
 import '../index.css';
 import LightRays from '@/components/LightRays';
-import Dock from '@/components/Dock';
 import { VscHome, VscArchive, VscAccount, VscSettingsGear } from 'react-icons/vsc';
 import CurvedLoop from '@/components/CurvedLoop';
 import PrismaticBurst from '@/components/PrismaticBurst';
@@ -78,14 +77,7 @@ function App() {
       </div>
 
       {/* Dock at the bottom */}
-      <div style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-        <Dock 
-          items={items}
-          panelHeight={68}
-          baseItemSize={50}
-          magnification={70}
-        />
-      </div>
+
 <div style={{ width: '100%', height: '100%', position: 'relative' }}>
   <PrismaticBurst
     animationType="rotate3d"
